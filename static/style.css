@@ -1,0 +1,80 @@
+/* Custom styles */
+body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.container {
+    flex: 1;
+}
+
+.navbar {
+    margin-bottom: 2rem;
+}
+
+.card {
+    margin-bottom: 1.5rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.form-control:focus {
+    border-color: #80bdff;
+    box-shadow: 0 0 0 0.2rem rgba(0,123,255,0.25);
+}
+
+.btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+}
+
+.btn-primary:hover {
+    background-color: #0056b3;
+    border-color: #0056b3;
+}
+
+/* Dashboard styles */
+.dashboard-card {
+    transition: transform 0.2s;
+}
+
+.dashboard-card:hover {
+    transform: translateY(-5px);
+}
+
+/* Track courier page styles */
+.tracking-status {
+    position: relative;
+    padding-left: 30px;
+}
+
+.tracking-status::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    background-color: #28a745;
+    transform: translateY(-50%);
+}
+
+/* Additional visual polish */
+body {
+    background: linear-gradient(180deg, #f8fafc 0%, #ffffff 100%);
+}
+
+.navbar-brand svg {
+    filter: brightness(0) invert(1);
+}
+
+.card {
+    border: 0;
+    border-radius: 0.6rem;
+    box-shadow: 0 6px 18px rgba(33,53,71,0.06);
+}
+
+footer {
+    border-top: 1px solid rgba(0,0,0,0.05);
+}

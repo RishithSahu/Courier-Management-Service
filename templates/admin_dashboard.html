@@ -1,0 +1,138 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Dashboard{% endblock %}
+
+{% block content %}
+<h2>Admin Dashboard</h2>
+
+<div class="row mb-4">
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Total Users</h5>
+                <p class="card-text display-4">{{ users|length }}</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Total Couriers</h5>
+                <p class="card-text display-4">{{ couriers|length }}</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Total Payments</h5>
+                <p class="card-text display-4">{{ payments|length }}</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <h3>Recent Couriers</h3>
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Bill No</th>
+                        <th>Sender</th>
+                        <th>Receiver</th>
+                        <th>Type</th>
+                        <th>Weight</th>
+                        <th>Date</th>
+                        <th>Status</th>
+                        <th>Agent</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for courier in couriers %}
+                    <tr>
+                        <td>{{ courier.billno }}</td>
+                        <td>{{ courier.sname }}</td>
+                        <td>{{ courier.rname }}</td>
+                        <td>{{ courier.courier_type }}</td>
+                        <td>{{ courier.weight }} kg</td>
+                        <td>{{ courier.date.strftime('%Y-%m-%d') }}</td>
+                        <td>
+                            {% set tracking = courier.tracking[-1] if courier.tracking else None %}
+                            {{ tracking.status if tracking else 'Unknown' }}
+                        </td>
+                        <td>
+                            {% if courier.delivery_agent %}
+                                {{ courier.delivery_agent.name }}
+                            {% else %}
+                                <form action="{{ url_for('assign_courier', courier_id=courier.cid) }}" method="POST" class="d-inline">
+                                    <select name="agent_id" class="form-select form-select-sm d-inline" style="width: auto;">
+                                        <option value="">Select Agent</option>
+                                        {% for agent in delivery_agents %}
+                                        <option value="{{ agent.agentid }}">{{ agent.name }}</option>
+                                        {% endfor %}
+                                    </select>
+                                    <button type="submit" class="btn btn-sm btn-primary">Assign</button>
+                                </form>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <a href="{{ url_for('track_courier', tracking_number=courier.billno) }}" class="btn btn-sm btn-info">Track</a>
+                            <!-- Inline status update form -->
+                            <form action="{{ url_for('update_status', courier_id=courier.cid) }}" method="POST" class="d-inline ms-2">
+                                <select name="status" class="form-select form-select-sm d-inline" style="width: 140px;">
+                                    <option value="">Set status</option>
+                                    <option value="Pending">Pending</option>
+                                    <option value="Out for Delivery">Out for Delivery</option>
+                                    <option value="In Transit">In Transit</option>
+                                    <option value="Cancelled">Cancelled</option>
+                                </select>
+                                <button type="submit" class="btn btn-sm btn-secondary">Update</button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-md-12">
+        <h3>Recent Payments</h3>
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Payment ID</th>
+                        <th>Courier Bill No</th>
+                        <th>Amount</th>
+                        <th>Mode</th>
+                        <th>Status</th>
+                        <th>Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for payment in payments %}
+                    <tr>
+                        <td>{{ payment.pid }}</td>
+                        <td>{{ payment.courier.billno }}</td>
+                        <td>₹{{ payment.amount }}</td>
+                        <td>{{ payment.payment_mode }}</td>
+                        <td>
+                            <span class="badge bg-{{ 'success' if payment.payment_status == 'Completed' else 'warning' if payment.payment_status == 'Pending' else 'danger' }}">
+                                {{ payment.payment_status }}
+                            </span>
+                        </td>
+                        <td>{{ payment.transaction_date.strftime('%Y-%m-%d %H:%M') }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<div class="py-5">
+    <div class="row align-items-center">
+        <div class="col-md-6">
+            <h1 class="display-5 fw-bold">Fast, Reliable Courier Services</h1>
+            <p class="lead text-muted">Send packages across India and internationally with confidence. Manage shipments, track progress, and get timely updates.</p>
+            <div class="d-flex gap-2 mt-4">
+                <a href="{{ url_for('create_courier') }}" class="btn btn-primary btn-lg">Send a Package</a>
+                <a href="{{ url_for('track_courier') }}" class="btn btn-outline-secondary btn-lg">Track Shipment</a>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card p-4">
+                <h5 class="mb-3">Quick Actions</h5>
+                <div class="row">
+                    <div class="col-6">
+                        <a href="{{ url_for('agent_login') }}" class="btn btn-warning w-100 mb-2">Agent Portal</a>
+                    </div>
+                    <div class="col-6">
+                        <a href="{{ url_for('register') }}" class="btn btn-outline-primary w-100 mb-2">Create Account</a>
+                    </div>
+                    <div class="col-12 mt-2">
+                        <p class="small text-muted">Need help? Contact support@courier.local</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% block title %}Notification Configuration{% endblock %}
+
+{% block content %}
+<div class="row">
+  <div class="col-md-8 offset-md-2">
+    <div class="card">
+      <div class="card-body">
+        <h3 class="card-title">Notification Configuration</h3>
+        <p class="text-muted">Manage SMTP and Twilio credentials used to send emails and SMS. Only admins can access this page.</p>
+        <form method="POST">
+          <h5>SMTP (Email)</h5>
+          <div class="mb-3">
+            <label class="form-label">SMTP Server</label>
+            <input name="SMTP_SERVER" class="form-control" value="{{ cfg.SMTP_SERVER or '' }}">
+          </div>
+          <div class="mb-3">
+            <label class="form-label">SMTP Port</label>
+            <input name="SMTP_PORT" class="form-control" value="{{ cfg.SMTP_PORT or '' }}">
+          </div>
+          <div class="mb-3">
+            <label class="form-label">SMTP Username</label>
+            <input name="SMTP_USERNAME" class="form-control" value="{{ cfg.SMTP_USERNAME or '' }}">
+          </div>
+          <div class="mb-3">
+            <label class="form-label">SMTP Password</label>
+            <input name="SMTP_PASSWORD" type="password" class="form-control" value="{{ cfg.SMTP_PASSWORD or '' }}">
+          </div>
+          <div class="form-check mb-3">
+            <input class="form-check-input" type="checkbox" name="SMTP_USE_TLS" id="smtp_use_tls" {% if cfg.SMTP_USE_TLS %}checked{% endif %}>
+            <label class="form-check-label" for="smtp_use_tls">Use TLS (STARTTLS)</label>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Email From (optional)</label>
+            <input name="EMAIL_FROM" class="form-control" value="{{ cfg.EMAIL_FROM or '' }}">
+          </div>
+
+          <h5 class="mt-4">Twilio (SMS)</h5>
+          <div class="mb-3">
+            <label class="form-label">Twilio Account SID</label>
+            <input name="TWILIO_ACCOUNT_SID" class="form-control" value="{{ cfg.TWILIO_ACCOUNT_SID or '' }}">
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Twilio Auth Token</label>
+            <input name="TWILIO_AUTH_TOKEN" type="password" class="form-control" value="{{ cfg.TWILIO_AUTH_TOKEN or '' }}">
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Twilio From Number (E.164)</label>
+            <input name="TWILIO_FROM_NUMBER" class="form-control" value="{{ cfg.TWILIO_FROM_NUMBER or '' }}">
+          </div>
+
+          <div class="d-flex gap-2">
+            <button type="submit" class="btn btn-primary">Save Settings</button>
+            <a href="{{ url_for('admin_dashboard') }}" class="btn btn-secondary">Back</a>
+          </div>
+        </form>
+
+        <hr>
+        <p class="small text-muted">Notes: Storing credentials in the database makes them available to admins via the UI. For better security, consider encrypting sensitive fields or using a secrets manager for production.</p>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

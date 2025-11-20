@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h2 class="mb-0">My Couriers</h2>
+    <div class="text-end">
+        <small class="text-muted">You have <strong>{{ couriers|length }}</strong> shipments</small>
+    </div>
+</div>
+
+<div class="table-responsive">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Bill No</th>
+                <th>From</th>
+                <th>To</th>
+                <th>Type</th>
+                <th>Status</th>
+                <th>Date</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for courier in couriers %}
+            <tr>
+                <td>{{ courier.billno }}</td>
+                <td>{{ courier.saddress }}</td>
+                <td>{{ courier.raddress }}</td>
+                <td>{{ courier.courier_type }}</td>
+                <td>
+                    {% set tracking = courier.tracking[-1] if courier.tracking else None %}
+                    {% if tracking %}
+                        <span class="badge bg-info text-dark">{{ tracking.status }}</span>
+                    {% else %}
+                        <span class="text-muted">Unknown</span>
+                    {% endif %}
+                </td>
+                <td>{{ courier.date.strftime('%Y-%m-%d') }}</td>
+                    <td>
+                        <a href="{{ url_for('track_courier', tracking_number=courier.billno) }}" class="btn btn-sm btn-info">Track</a>
+                    </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<div class="mt-4">
+    <a href="{{ url_for('create_courier') }}" class="btn btn-primary">Send New Courier</a>
+</div>
+{% endblock %}

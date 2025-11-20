@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block title %}Track Courier{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-6 offset-md-3">
+        <h2 class="text-center mb-4">Track Your Courier</h2>
+        <form method="POST" class="mb-4">
+            <div class="input-group">
+                <input type="text" class="form-control" name="tracking_number" placeholder="Enter Tracking Number / Bill No" required>
+                <button type="submit" class="btn btn-primary">Track</button>
+            </div>
+        </form>
+
+        {% if tracking_info %}
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Tracking Information</h5>
+                    <div class="timeline">
+                        {% for tracking in tracking_info %}
+                            <div class="tracking-status mb-3">
+                                <strong>{{ tracking.status }}</strong>
+                                <p class="mb-1">Location: {{ tracking.current_location }}</p>
+                                <small class="text-muted">{{ tracking.updated_at.strftime('%Y-%m-%d %H:%M:%S') }}</small>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

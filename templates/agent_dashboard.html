@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block title %}Agent Dashboard{% endblock %}
+
+{% block content %}
+<h2>Your Assigned Couriers</h2>
+<div class="table-responsive">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Bill No</th>
+                <th>Sender</th>
+                <th>Receiver</th>
+                <th>Type</th>
+                <th>Weight</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for courier in couriers %}
+            <tr>
+                <td>{{ courier.billno }}</td>
+                <td>{{ courier.sname }}</td>
+                <td>{{ courier.rname }}</td>
+                <td>{{ courier.courier_type }}</td>
+                <td>{{ courier.weight }} kg</td>
+                <td>
+                    {% set tracking = courier.tracking[-1] if courier.tracking else None %}
+                    {{ tracking.status if tracking else 'Unknown' }}
+                </td>
+                <td>
+                    {% if tracking and tracking.status == 'Delivered' %}
+                        <button class="btn btn-sm btn-secondary" disabled>Closed</button>
+                    {% else %}
+                        <form action="{{ url_for('agent_mark_delivered', courier_id=courier.cid) }}" method="POST" class="d-inline">
+                            <button type="submit" class="btn btn-sm btn-success">Mark Delivered</button>
+                        </form>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
