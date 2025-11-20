@@ -32,7 +32,7 @@ app.config['TWILIO_FROM_NUMBER'] = os.environ.get('TWILIO_FROM_NUMBER')
 # Use the mysqlconnector dialect so SQLAlchemy uses mysql-conne
 # ctor-python (already installed).
 # Note: URL-encode special characters in the password. The original password contained '@'.
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root:Manujp29%40@localhost/courierdb'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root:root@localhost/courierdb'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
